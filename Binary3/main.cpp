@@ -17,6 +17,17 @@ class Tree
 			std::cout << "EDestructor:\t" << this << std::endl;
 		}
 	} *Root;
+public:
+	Tree():Root(nullptr)
+	{
+		std::cout << "TConstructor:\t" << this << std::endl;
+	}
+	~Tree()
+	{
+		std::cout << "TDestructor:\t" << this << std::endl;
+	}
+
+	void 
 };
 
 void main()
