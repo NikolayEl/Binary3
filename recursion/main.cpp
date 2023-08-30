@@ -2,9 +2,11 @@
 
 void elevator(int floor);
 int Factorial(int n);
+double Power(double a, int n);
 
 //#define ELEVATOR_CHEK
 //#define FACTORIAL_CHEK
+//#define POWER_CHEK
 void main()
 {
 	setlocale(LC_ALL, "");
@@ -18,7 +20,14 @@ void main()
 	std::cout << "Введите число: "; std::cin >> n;
 	(n < 0) ? std::cout << "Вы ввели отрицательное число!" : std::cout << "Факториал числа " << n << " будет: " << Factorial(n);
 #endif // FACTORIAL_CHEK
-
+#ifdef POWER_CHEK
+	double a;
+	int n;
+	std::cout << "Введите число: "; std::cin >> a;
+	std::cout << "Введите степень числа: "; std::cin >> n;
+	(n < 0) ? std::cout << "Возможное вычесление только положительных степеней!" :
+		std::cout << "Число " << a << " в степени " << n << " составляет: " << Power(a, n);
+#endif // POWER_CHEK
 
 }
 void elevator(int floor)
@@ -36,4 +45,10 @@ int Factorial(int n)
 {
 	if (n == 0) return 1;
 	return n * Factorial(n - 1);
+}
+
+double Power(double a, int n)
+{
+	if (n == 0) return 1;
+	return a * Power(a, n - 1);
 }
