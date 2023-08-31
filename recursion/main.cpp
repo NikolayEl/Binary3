@@ -39,8 +39,6 @@ void main()
 		return;
 	}
 	int* fibo = new int[n] {};
-	fibo[n - 1] = 1;
-	if (n > 1)fibo[n - 2] = 1;
 	if (n > 0)Fibonacci(n, fibo);
 #endif // FIBONACCI_CHEK
 
@@ -80,7 +78,11 @@ void Fibonacci(int n, int*& fibo)
 		std::cout << fibo[n - 1] << ", " << fibo[n - 2];
 		return;
 	}
-	if (fibo[n - 2] == 1) std::cout << fibo[n - 1] << ", " << fibo[n - 2];
+	if (!fibo[n - 1])
+	{
+		fibo[n - 1] = 1; fibo[n - 2] = 1;
+		std::cout << fibo[n - 1] << ", " << fibo[n - 2];
+	}
 	fibo[n - 3] = fibo[n - 2] + fibo[n - 1];
 	std::cout << ", "  << fibo[n - 3];
 	if (n == 3) return;
