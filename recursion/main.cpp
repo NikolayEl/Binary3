@@ -8,6 +8,7 @@ void Fibonacci(int n, int*& fibo);
 //#define ELEVATOR_CHEK
 //#define FACTORIAL_CHEK
 //#define POWER_CHEK
+//#define FIBONACCI_CHEK
 void main()
 {
 	setlocale(LC_ALL, "");
@@ -29,6 +30,7 @@ void main()
 	(n < 0) ? std::cout << "Возможное вычесление только положительных степеней!" :
 		std::cout << "Число " << a << " в степени " << n << " составляет: " << Power(a, n);
 #endif // POWER_CHEK
+#ifdef FIBONACCI_CHEK
 	int n = 0;
 	std::cout << "Введите сколько чисел Фибоначи вывести: "; std::cin >> n;
 	if (n <= 0)
@@ -36,10 +38,12 @@ void main()
 		std::cout << "Число должно быть больше 0!" << std::endl;
 		return;
 	}
-	int* fibo = new int[n]{};
+	int* fibo = new int[n] {};
 	fibo[n - 1] = 1;
-	if(n > 1)fibo[n - 2] = 1;
-	if(n > 0)Fibonacci(n, fibo);
+	if (n > 1)fibo[n - 2] = 1;
+	if (n > 0)Fibonacci(n, fibo);
+#endif // FIBONACCI_CHEK
+
 }
 void elevator(int floor)
 {
