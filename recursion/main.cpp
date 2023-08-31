@@ -1,4 +1,4 @@
-#include<iostream>
+ï»¿#include<iostream>
 
 void elevator(int floor);
 int Factorial(int n);
@@ -13,27 +13,27 @@ void main()
 	setlocale(LC_ALL, "");
 #ifdef ELEVATOR_CHEK
 	int n;
-	std::cout << "Ââåäèòå íîìåð ýòàæà: "; std::cin >> n;
+	std::cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð½Ð¾Ð¼ÐµÑ€ ÑÑ‚Ð°Ð¶Ð°: "; std::cin >> n;
 	elevator(n);
 #endif // ELEVATOR_CHEK
 #ifdef FACTORIAL_CHEK
 	int n;
-	std::cout << "Ââåäèòå ÷èñëî: "; std::cin >> n;
-	(n < 0) ? std::cout << "Âû ââåëè îòðèöàòåëüíîå ÷èñëî!" : std::cout << "Ôàêòîðèàë ÷èñëà " << n << " áóäåò: " << Factorial(n);
+	std::cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ñ‡Ð¸ÑÐ»Ð¾: "; std::cin >> n;
+	(n < 0) ? std::cout << "Ð’Ñ‹ Ð²Ð²ÐµÐ»Ð¸ Ð¾Ñ‚Ñ€Ð¸Ñ†Ð°Ñ‚ÐµÐ»ÑŒÐ½Ð¾Ðµ Ñ‡Ð¸ÑÐ»Ð¾!" : std::cout << "Ð¤Ð°ÐºÑ‚Ð¾Ñ€Ð¸Ð°Ð» Ñ‡Ð¸ÑÐ»Ð° " << n << " Ð±ÑƒÐ´ÐµÑ‚: " << Factorial(n);
 #endif // FACTORIAL_CHEK
 #ifdef POWER_CHEK
 	double a;
 	int n;
-	std::cout << "Ââåäèòå ÷èñëî: "; std::cin >> a;
-	std::cout << "Ââåäèòå ñòåïåíü ÷èñëà: "; std::cin >> n;
-	(n < 0) ? std::cout << "Âîçìîæíîå âû÷åñëåíèå òîëüêî ïîëîæèòåëüíûõ ñòåïåíåé!" :
-		std::cout << "×èñëî " << a << " â ñòåïåíè " << n << " ñîñòàâëÿåò: " << Power(a, n);
+	std::cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ñ‡Ð¸ÑÐ»Ð¾: "; std::cin >> a;
+	std::cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ ÑÑ‚ÐµÐ¿ÐµÐ½ÑŒ Ñ‡Ð¸ÑÐ»Ð°: "; std::cin >> n;
+	(n < 0) ? std::cout << "Ð’Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ð¾Ðµ Ð²Ñ‹Ñ‡ÐµÑÐ»ÐµÐ½Ð¸Ðµ Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ð¿Ð¾Ð»Ð¾Ð¶Ð¸Ñ‚ÐµÐ»ÑŒÐ½Ñ‹Ñ… ÑÑ‚ÐµÐ¿ÐµÐ½ÐµÐ¹!" :
+		std::cout << "Ð§Ð¸ÑÐ»Ð¾ " << a << " Ð² ÑÑ‚ÐµÐ¿ÐµÐ½Ð¸ " << n << " ÑÐ¾ÑÑ‚Ð°Ð²Ð»ÑÐµÑ‚: " << Power(a, n);
 #endif // POWER_CHEK
 	int n = 0;
-	std::cout << "Ââåäèòå ñêîëüêî ÷èñåë Ôèáîíà÷è âûâåñòè: "; std::cin >> n;
+	std::cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ ÑÐºÐ¾Ð»ÑŒÐºÐ¾ Ñ‡Ð¸ÑÐµÐ» Ð¤Ð¸Ð±Ð¾Ð½Ð°Ñ‡Ð¸ Ð²Ñ‹Ð²ÐµÑÑ‚Ð¸: "; std::cin >> n;
 	if (n <= 0)
 	{
-		std::cout << "×èñëî äîëæíî áûòü áîëüøå 0!" << std::endl;
+		std::cout << "Ð§Ð¸ÑÐ»Ð¾ Ð´Ð¾Ð»Ð¶Ð½Ð¾ Ð±Ñ‹Ñ‚ÑŒ Ð±Ð¾Ð»ÑŒÑˆÐµ 0!" << std::endl;
 		return;
 	}
 	int* fibo = new int[n]{};
@@ -45,12 +45,12 @@ void elevator(int floor)
 {
 	if (floor == 0)
 	{
-		std::cout << "Âû â ïîäâàëå" << std::endl;
+		std::cout << "Ð’Ñ‹ Ð² Ð¿Ð¾Ð´Ð²Ð°Ð»Ðµ" << std::endl;
 		return;
 	}
-	std::cout << "Âû íà " << floor << " ýòàæå\n";
+	std::cout << "Ð’Ñ‹ Ð½Ð° " << floor << " ÑÑ‚Ð°Ð¶Ðµ\n";
 	elevator(floor > 0?floor - 1: floor + 1);
-	std::cout << "Âû íà " << floor << " ýòàæå\n";
+	std::cout << "Ð’Ñ‹ Ð½Ð° " << floor << " ÑÑ‚Ð°Ð¶Ðµ\n";
 }
 int Factorial(int n)
 {
