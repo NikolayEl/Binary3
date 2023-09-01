@@ -8,7 +8,7 @@ void Fibonacci(int n, int*& fibo);
 //#define ELEVATOR_CHEK
 //#define FACTORIAL_CHEK
 //#define POWER_CHEK
-//#define FIBONACCI_CHEK
+#define FIBONACCI_CHEK
 void main()
 {
 	setlocale(LC_ALL, "");
