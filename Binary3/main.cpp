@@ -95,6 +95,81 @@ public:
 	{
 		return double(sum(this->Root)) / Count(this->Root);
 	}
+	int depth(Element* Root = nullptr)
+	{
+		if (!Root) Root = getRoot();
+		return Root == nullptr ? 0 : (!Root->pLeft ? 1 : depth(Root->pLeft) + 1) > (!Root->pRight ? 1 : 
+			depth(Root->pRight) + 1) ? (!Root->pLeft ? 1 : depth(Root->pLeft) + 1): 
+			(!Root->pRight ? 1 : depth(Root->pRight) + 1);
+	}
+	void to_array(int*& arr, int& count, Element* Root = nullptr)
+	{
+		if (!Root)
+		{
+			Root = getRoot();
+		}
+		if (Root == nullptr)return;
+		if (Root->pLeft) to_array(arr, count, Root->pLeft);
+		arr[count] = Root->Data;
+		count++;
+		if (Root->pRight) to_array(arr, count, Root->pRight);
+	}
+	void erase(int Data, Element* Root = nullptr)
+	{
+		if (!Root) Root = getRoot();
+		int count = 0;
+		int* array = new int[Count()];
+		to_array(array, count);
+		print();
+		Destructor();
+		print();
+		int average = (count % 2 == 0? (count / 2): (count / 2 + 1));
+		Root->Data = array[average];
+		for (int i = average - 1; i > -1; i--)
+		{
+			if (array[i] == Data) continue;
+			insert(array[i]);
+		}
+		for (int i = average + 1; i < count; i++) 
+		{
+			if (array[i] == Data) continue;
+			insert(array[i]);
+		}
+		//std::cout << std::endl << "Корень равен = " << Root->Data << std::endl;
+		//if (!Root) Root = getRoot();
+		//if (Root->pLeft->Data == Data && Root->pRight->Data == Data)
+		//{
+		//	Element* temp;
+		//	if (Root->pLeft?Root->pLeft->Data == Data: 0) 
+		//	{
+		//		temp = Root->pLeft;
+		//		if (Root->pLeft->pRight)
+		//		{
+		//			Root->pLeft = Root->pLeft->pRight;
+		//			Root->pLeft->pLeft = temp->pLeft;
+		//			delete temp;
+		//		}
+		//		else if (Root->pLeft->pLeft)
+		//		{
+
+		//		}
+		//	}
+		//	else if (Root->pRight ? Root->pRight->Data == Data : 0)
+		//	{
+		//		temp = Root->pRight;
+		//		if (Root->pRight->pLeft)
+		//		{
+		//			Root->pRight = Root->pRight->pLeft;
+		//			Root->pRight->pRight = temp->pRight;
+		//			delete temp;
+		//		}
+		//	}
+		//}
+		//if (Root->pLeft) erase(Data, Root->pLeft);
+		//else return;
+		//if (Root->pRight) erase(Data, Root->pRight);
+		//else return;
+	}
 	void print(Element* Root = nullptr)
 	{
 		if (!Root)Root = getRoot();
@@ -144,9 +219,11 @@ void main()
 	std::cout << "Сумма Элементов дерева:\t\t " << tree.sum() << std::endl;
 	std::cout << "Кол-во элементов дерева :\t " << tree.Count() << std::endl;
 	std::cout << "Средне-арифметическое элементов дерева :\t " << tree.Avg() << std::endl;
-	std::cout << delimitr << std::endl;
-	//tree.Destructor();
-	//tree.print();
+	std::cout << "Глубина дерева равна: \t" << tree.depth() << std::endl;
+	std::cout << "Введите удаляемое значение: "; int erase_number; std::cin >> erase_number;
+	tree.erase(erase_number);
+	tree.print();
+
 	std::cout << delimitr << std::endl;
 
 	UniqueTree u_tree;
