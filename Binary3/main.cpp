@@ -140,6 +140,7 @@ public:
 			if (array[i] == Data) continue;
 			insert(array[i]);
 		}
+		delete[] array;
 		//std::cout << std::endl << "Корень равен = " << Root->Data << std::endl;
 		//if (!Root) Root = getRoot();
 		//if (Root->pLeft->Data == Data && Root->pRight->Data == Data)
@@ -175,7 +176,38 @@ public:
 		//if (Root->pRight) erase(Data, Root->pRight);
 		//else return;
 	}
-	void tree_print(){}
+	void balance(Element* Root = nullptr)
+	{
+		if (!Root) Root = getRoot();
+		int count = 0;
+		int* array = new int[Count()];
+		to_array(array, count);
+		print();
+		Destructor();
+		print();
+		int average = (count % 2 == 0 ? (count / 2) : (count / 2 + 1));
+		Root->Data = array[average];
+		for (int i = average - 1; i > -1; i--)
+		{
+			insert(array[i]);
+		}
+		for (int i = average + 1; i < count; i++)
+		{
+			insert(array[i]);
+		}		
+		delete[] array;
+	}
+	void tree_print(Element* Root = nullptr, int depth = 0)
+	{
+		if (!Root)Root = getRoot();
+		if (Root)
+		{
+			if(Root->pRight)tree_print(Root->pRight, depth + 1);
+			for (int i = 0; i < depth; i++) std::cout << "	";
+			std::cout << Root->Data << std::endl;
+			if(Root->pLeft)tree_print(Root->pLeft, depth + 1);
+		}
+	}
 	void print(Element* Root = nullptr)
 	{
 		if (!Root)Root = getRoot();
@@ -210,6 +242,7 @@ public:
 };
 
 //#define FUNCION_TREE_CHEK
+//#define INITIALIZER_CHEK
 
 void main()
 {
@@ -249,6 +282,19 @@ void main()
 	std::cout << "Кол-во элементов дерева :\t " << u_tree.Count() << std::endl;
 	std::cout << "Средне-арифметическое элементов дерева :\t " << u_tree.Avg() << std::endl;
 #endif // FUNCION_TREE_CHEK
+#ifdef INITIALIZER_CHEK
 	Tree tree2 = { 3, 5, 8, 13, 21 };
 	tree2.print();
+#endif // INITIALIZER_CHEK
+
+	Tree tree2;
+	for (int i = 0; i < n; i++) tree2.insert(rand() % 100);
+	tree2.print();
+	system("PAUSE");
+	system("cls");
+	tree2.tree_print();
+	tree2.balance();
+	system("PAUSE");
+	system("cls");
+	tree2.tree_print();
 }
