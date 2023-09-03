@@ -31,6 +31,11 @@ public:
 	{
 		std::cout << "TConstructor:\t" << this << std::endl;
 	}
+	Tree(const std::initializer_list<int>& arr) :Tree()
+	{
+		for (int i : arr) insert(i);
+		std::cout << "IniConstructor:\t" << this << std::endl;
+	}
 	~Tree()
 	{
 		Destructor();
@@ -170,6 +175,7 @@ public:
 		//if (Root->pRight) erase(Data, Root->pRight);
 		//else return;
 	}
+	void tree_print(){}
 	void print(Element* Root = nullptr)
 	{
 		if (!Root)Root = getRoot();
@@ -202,11 +208,15 @@ public:
 	}
 
 };
+
+//#define FUNCION_TREE_CHEK
+
 void main()
 {
 	setlocale(LC_ALL, "");
 	int n;
 	std::cout << "Введите размер дерева: "; std::cin >> n;
+#ifdef FUNCION_TREE_CHEK
 	Tree tree;
 	for (int i = 0; i < n; i++)
 	{
@@ -238,4 +248,7 @@ void main()
 	std::cout << "Сумма Элементов дерева:\t\t " << u_tree.sum() << std::endl;
 	std::cout << "Кол-во элементов дерева :\t " << u_tree.Count() << std::endl;
 	std::cout << "Средне-арифметическое элементов дерева :\t " << u_tree.Avg() << std::endl;
+#endif // FUNCION_TREE_CHEK
+	Tree tree2 = { 3, 5, 8, 13, 21 };
+	tree2.print();
 }
