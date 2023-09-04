@@ -1,4 +1,5 @@
 #include <iostream>
+#include<ctime>
 #define delimitr "\n------------------------------------------------------\n"
 
 class Tree
@@ -12,12 +13,18 @@ protected:
 	public:
 		Element(int Data, Element* pLeft = nullptr, Element* pRight = nullptr) :Data(Data), pLeft(pLeft), pRight(pRight)
 		{
+#ifdef DEBUG
 			std::cout << "EConstructor:\t" << this << std::endl;
+#endif // DEBUG
+
 		}
 		~Element()
 		{
 			
+#ifdef DEBUG
 			std::cout << "EDestructor:\t" << this << std::endl;
+#endif // DEBUG
+
 		}
 		friend class Tree;
 		friend class UniqueTree;
@@ -29,19 +36,94 @@ public:
 	}
 	Tree():Root(nullptr)
 	{
+#ifdef DEBUG
 		std::cout << "TConstructor:\t" << this << std::endl;
+#endif // DEBUG
+
 	}
 	Tree(const std::initializer_list<int>& arr) :Tree()
 	{
-		for (int i : arr) insert(i);
+		for (int i : arr) insert(i, Root);
+#ifdef DEBUG
 		std::cout << "IniConstructor:\t" << this << std::endl;
+#endif // DEBUG
+
 	}
 	~Tree()
 	{
-		Destructor();
-		delete Root;
+		Clear(Root);
+#ifdef DEBUG
 		std::cout << "TDestructor:\t" << this << std::endl;
+#endif // DEBUG
+
 	}
+	void insert(int Data)
+	{
+		return insert(Data, Root);
+	}
+	int minValue() const
+	{
+		return minValue(Root);
+	}
+	int maxValue() const
+	{
+		return maxValue(Root);
+	}
+	int sum()
+	{
+		return sum(Root);
+	}
+	int Count()
+	{
+		return Count(Root);
+	}
+	double Avg()
+	{
+		return double(sum(this->Root)) / Count(this->Root);
+	}
+	int depth()
+	{
+		return depth(Root);
+	}
+	void to_array(int*& arr, int& count)
+	{
+		return to_array(arr, count, Root);
+	}
+	void erase(int Data)
+	{
+		return erase(Data, Root);
+	}
+	void Clear()
+	{
+		Clear(Root);
+		Root = nullptr;
+	}
+	void balance()
+	{
+		return balance(Root);
+	}
+	void tree_print() const
+	{
+		tree_print(Root, 0);
+	}
+	void print() const
+	{
+		return print(Root);
+	}
+	int depth() const
+	{
+		return depth(Root);
+	}
+private:
+	//-----------------------------------------------------------------------------------------------
+	void Clear(Element* Root)
+	{
+		if (Root == nullptr) return;
+		Clear(Root->pLeft);
+		Clear(Root->pRight);
+		delete Root;
+	}
+
 	void Destructor()
 	{
 		if (Root->pLeft)
@@ -58,9 +140,10 @@ public:
 		}
 		if(Root->pLeft || Root->pRight) Destructor();
 	}
-	void insert(int Data, Element* Root = nullptr)
+
+
+	void insert(int Data, Element* Root)
 	{
-		if (!Root) Root = getRoot();
 		if (this->Root == nullptr)this->Root = new Element(Data);
 		if (!Root)return;
 		if (Data < Root->Data)
@@ -74,52 +157,46 @@ public:
 			else insert(Data, Root->pRight);
 		}
 	}
-	int minValue(Element* Root = nullptr)
+	int minValue(Element* Root) const
 	{
-		if(!Root)Root = getRoot();
 		if (this->Root == nullptr)return 0;
 		return Root->pLeft == nullptr ? Root->Data : minValue(Root->pLeft);
 	}
-	int maxValue(Element* Root = nullptr)
+	int maxValue(Element* Root) const
 	{
-		if (!Root)Root = getRoot();
 		if (this->Root == nullptr)return 0;
 		return Root->pRight == nullptr ? Root->Data : maxValue(Root->pRight);
 	}
-	int sum(Element* Root = nullptr)
+	int sum(Element* Root)
 	{
-		if (!Root)Root = getRoot();
 		return Root == nullptr? 0 : Root->Data + (!Root->pLeft? 0 : sum(Root->pLeft)) + (!Root->pRight ? 0 : sum(Root->pRight));
 	}
-	int Count(Element* Root = nullptr)
+	int Count(Element* Root)
 	{	
-		if (!Root)Root = getRoot();
 		return Root == nullptr ? 0 : (!Root->pLeft ? 0 : Count(Root->pLeft)) + (!Root->pRight ? 0 : Count(Root->pRight)) + 1;
 	}
-	double Avg()
+	int depth(Element* Root) const
 	{
-		return double(sum(this->Root)) / Count(this->Root);
+		//return Root == nullptr ? 0 : (!Root->pLeft ? 1 : depth(Root->pLeft) + 1) > (!Root->pRight ? 1 : 
+		//	depth(Root->pRight) + 1) ? (!Root->pLeft ? 1 : depth(Root->pLeft) + 1): 
+		//	(!Root->pRight ? 1 : depth(Root->pRight) + 1);
+
+		if (Root == nullptr) return 0;
+		int l_depth = depth(Root->pLeft) + 1;
+		int R_depth = depth(Root->pRight) + 1;
+		return l_depth > R_depth ? l_depth : R_depth;
+			
 	}
-	int depth(Element* Root = nullptr)
+	void to_array(int*& arr, int& count, Element* Root)
 	{
-		if (!Root) Root = getRoot();
-		return Root == nullptr ? 0 : (!Root->pLeft ? 1 : depth(Root->pLeft) + 1) > (!Root->pRight ? 1 : 
-			depth(Root->pRight) + 1) ? (!Root->pLeft ? 1 : depth(Root->pLeft) + 1): 
-			(!Root->pRight ? 1 : depth(Root->pRight) + 1);
-	}
-	void to_array(int*& arr, int& count, Element* Root = nullptr)
-	{
-		if (!Root)
-		{
-			Root = getRoot();
-		}
+		if (!Root)Root = getRoot();
 		if (Root == nullptr)return;
 		if (Root->pLeft) to_array(arr, count, Root->pLeft);
 		arr[count] = Root->Data;
 		count++;
 		if (Root->pRight) to_array(arr, count, Root->pRight);
 	}
-	void erase(int Data, Element* Root = nullptr)
+	void erase(int Data, Element* Root)
 	{
 		if (!Root) Root = getRoot();
 		int count = 0;
@@ -176,7 +253,7 @@ public:
 		//if (Root->pRight) erase(Data, Root->pRight);
 		//else return;
 	}
-	void balance(Element* Root = nullptr)
+	void balance(Element* Root)
 	{
 		if (!Root) Root = getRoot();
 		int count = 0;
@@ -185,21 +262,32 @@ public:
 		print();
 		Destructor();
 		print();
-		int average = (count % 2 == 0 ? (count / 2) : (count / 2 + 1));
+		int average = (count % 2 == 0 ? (count / 2) : (count / 2 + 1)) + 1;
 		Root->Data = array[average];
 		for (int i = average - 1; i > -1; i--)
 		{
+			if (i % 4 != 0) continue;
+			insert(array[i]);
+		}
+		for (int i = average - 1; i > -1; i--)
+		{
+			if (i % 4 == 0) continue;
 			insert(array[i]);
 		}
 		for (int i = average + 1; i < count; i++)
 		{
+			if (i % 4 != 0) continue;
 			insert(array[i]);
-		}		
+		}	
+		for (int i = average + 1; i < count; i++)
+		{
+			if (i % 4 == 0) continue;
+			insert(array[i]);
+		}
 		delete[] array;
 	}
-	void tree_print(Element* Root = nullptr, int depth = 0)
+	void tree_print(Element* Root, int depth) const
 	{
-		if (!Root)Root = getRoot();
 		if (Root)
 		{
 			if(Root->pRight)tree_print(Root->pRight, depth + 1);
@@ -208,9 +296,8 @@ public:
 			if(Root->pLeft)tree_print(Root->pLeft, depth + 1);
 		}
 	}
-	void print(Element* Root = nullptr)
+	void print(Element* Root) const
 	{
-		if (!Root)Root = getRoot();
 		if (Root == nullptr)return;
 		if(Root->pLeft) print(Root->pLeft);
 		std::cout << Root->Data << "\t";
@@ -222,7 +309,6 @@ public:
 
 class UniqueTree: public Tree
 {
-public: 
 	void insert(int Data, Element* Root)
 	{
 		if (this->Root == nullptr)this->Root = new Element(Data);
@@ -238,58 +324,107 @@ public:
 			else insert(Data, Root->pRight);
 		}
 	}
+public: 
+	void insert(int Data)
+	{
+		return insert(Data, Root);
+	}
 
 };
 
-//#define FUNCION_TREE_CHEK
+#define FUNCION_TREE_CHEK
 //#define INITIALIZER_CHEK
+//#define BALANCE_CHEK
 
 void main()
 {
 	setlocale(LC_ALL, "");
+#ifdef FUNCION_TREE_CHEK
 	int n;
 	std::cout << "Введите размер дерева: "; std::cin >> n;
-#ifdef FUNCION_TREE_CHEK
 	Tree tree;
+	clock_t start = clock();
 	for (int i = 0; i < n; i++)
 	{
 		tree.insert(rand() % 100);
 	}
-	tree.print();
+	clock_t end = clock();
+	std::cout << "Дерево заполнено за " << double(end - start) / CLOCKS_PER_SEC << " секунд\n";
+	//tree.Clear();
+	//tree.print();
 	std::cout << std::endl;
-	std::cout << "Минимальное значение в дереве: " << tree.minValue() << std::endl;
-	std::cout << "Максимальное значение в дереве: " << tree.maxValue() << std::endl;
-	std::cout << "Сумма Элементов дерева:\t\t " << tree.sum() << std::endl;
-	std::cout << "Кол-во элементов дерева :\t " << tree.Count() << std::endl;
-	std::cout << "Средне-арифметическое элементов дерева :\t " << tree.Avg() << std::endl;
-	std::cout << "Глубина дерева равна: \t" << tree.depth() << std::endl;
-	std::cout << "Введите удаляемое значение: "; int erase_number; std::cin >> erase_number;
-	tree.erase(erase_number);
-	tree.print();
+	/////////////////////////////////////////////////////////////////////////////////////////////////////
+	std::cout << "Минимальное значение в дереве: ";
+	start = clock();
+	int min = tree.minValue();
+	end = clock();
+	std::cout << min << ", вычеслено за " << double(end - start) / CLOCKS_PER_SEC << " секунд\n";
+	/////////////////////////////////////////////////////////////////////////////////////////////////////
+	std::cout << "Максимальное значение в дереве: ";
+	start = clock();
+	int max = tree.maxValue();
+	end = clock();
+	std::cout << max << ", вычеслено за " << double(end - start) / CLOCKS_PER_SEC << " секунд\n";
+	/////////////////////////////////////////////////////////////////////////////////////////////////////
+	std::cout << "Сумма Элементов дерева:\t\t ";
+	start = clock();
+	int sum = tree.sum();
+	end = clock();
+	std::cout << sum << ", вычеслено за " << double(end - start) / CLOCKS_PER_SEC << " секунд\n";
+	/////////////////////////////////////////////////////////////////////////////////////////////////////
+	std::cout << "Кол-во элементов дерева :\t ";
+	start = clock();
+	int count = tree.Count();
+	end = clock();
+	std::cout << count << ", вычеслено за " << double(end - start) / CLOCKS_PER_SEC << " секунд\n";
+	/////////////////////////////////////////////////////////////////////////////////////////////////////
+	std::cout << "Средне-арифметическое элементов дерева :\t ";
+	start = clock();
+	int avg = tree.Avg();
+	end = clock();
+	std::cout << avg << ", вычеслено за " << double(end - start) / CLOCKS_PER_SEC << " секунд\n";
+	/////////////////////////////////////////////////////////////////////////////////////////////////////
+	std::cout << "Глубина дерева равна: \t";
+	start = clock();
+	int depth = tree.depth();
+	end = clock();
+	std::cout << depth << ", вычеслено за " << double(end - start) / CLOCKS_PER_SEC << " секунд\n";
+	/////////////////////////////////////////////////////////////////////////////////////////////////////
+	//std::cout << "Введите удаляемое значение: "; int erase_number; std::cin >> erase_number;
+	//tree.erase(erase_number);
+	system("PAUSE");
 
 	std::cout << delimitr << std::endl;
 
 	UniqueTree u_tree;
 	for (int i = 0; i < n; i++)
 	{
-		u_tree.insert(rand() % 100, u_tree.getRoot());
+		u_tree.insert(rand() % 100);
 	}
-	u_tree.print();
+	//u_tree.print();
 	std::cout << std::endl;
 	std::cout << "Минимальное значение в дереве: " << u_tree.minValue() << std::endl;
 	std::cout << "Максимальное значение в дереве: " << u_tree.maxValue() << std::endl;
 	std::cout << "Сумма Элементов дерева:\t\t " << u_tree.sum() << std::endl;
 	std::cout << "Кол-во элементов дерева :\t " << u_tree.Count() << std::endl;
 	std::cout << "Средне-арифметическое элементов дерева :\t " << u_tree.Avg() << std::endl;
+	std::cout << "Глубина дерева равна: \t" << u_tree.depth() << std::endl;
 #endif // FUNCION_TREE_CHEK
 #ifdef INITIALIZER_CHEK
-	Tree tree2 = { 3, 5, 8, 13, 21 };
+	Tree tree2 = { 50, 25, 75, 16, 32, 64, 90, 28 };
 	tree2.print();
+	std::cout << "Глубина дерева: " << tree2.depth() << std::endl;
+	//std::cout << std::endl << std::endl;
+	//tree2.tree_print();
 #endif // INITIALIZER_CHEK
 
-	Tree tree2;
-	for (int i = 0; i < n; i++) tree2.insert(rand() % 100);
-	tree2.print();
+#ifdef BALANCE_CHEK
+	setlocale(LC_ALL, "");
+	int n;
+	std::cout << "Введите размер дерева: "; std::cin >> n;
+	Tree tree2 = { 3, 5, 8, 13, 21, 34, 55, 89 };
+	//for (int i = 0; i < n; i++) tree2.insert(rand() % 100);
+	//tree2.print();
 	system("PAUSE");
 	system("cls");
 	tree2.tree_print();
@@ -297,4 +432,6 @@ void main()
 	system("PAUSE");
 	system("cls");
 	tree2.tree_print();
+#endif // BALANCE_CHEK
+
 }
