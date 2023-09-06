@@ -61,11 +61,15 @@ public:
 	{
 		return insert(Data, Root);
 	}
-	int minValue()
+	void erase(int Data)
+	{
+		erase(Data, Root);
+	}
+	int minValue() const
 	{
 		return minValue(Root);
 	}
-	int maxValue()
+	int maxValue() const
 	{
 		return maxValue(Root);
 	}
@@ -73,11 +77,7 @@ public:
 	{
 		return sum(Root);
 	}
-	int result()
-	{
-		return Root->Data;
-	}
-	int Count()
+	int Count() const
 	{
 		return Count(Root);
 	}
@@ -85,7 +85,7 @@ public:
 	{
 		return double(sum(this->Root)) / Count(this->Root);
 	}
-	int depth()
+	int depth() const
 	{
 		return depth(Root);
 	}
@@ -93,9 +93,9 @@ public:
 	{
 		return to_array(arr, count, Root);
 	}
-	void erase(int Data)
+	void erase_my(int Data)
 	{
-		return erase(Data, Root);
+		return erase_my(Data, Root);
 	}
 	void Clear()
 	{
@@ -114,7 +114,7 @@ public:
 	{
 		return print(Root);
 	}
-//private:
+private:
 	//-----------------------------------------------------------------------------------------------
 	void Clear(Element* Root)
 	{
@@ -171,7 +171,7 @@ public:
 	{
 		return Root == nullptr? 0 : Root->Data + (!Root->pLeft? 0 : sum(Root->pLeft)) + (!Root->pRight ? 0 : sum(Root->pRight));
 	}
-	int Count(Element* Root)
+	int Count(Element* Root) const
 	{	
 		return Root == nullptr ? 0 : (!Root->pLeft ? 0 : Count(Root->pLeft)) + (!Root->pRight ? 0 : Count(Root->pRight)) + 1;
 	}
@@ -196,7 +196,34 @@ public:
 		count++;
 		if (Root->pRight) to_array(arr, count, Root->pRight);
 	}
-	void erase(int Data, Element* Root)
+	void erase(int Data, Element* &Root)
+	{
+		if (Root == nullptr) return;
+		erase(Data, Root->pLeft);
+		erase(Data, Root->pRight);
+		if (Data == Root->Data)
+		{
+			if (Root->pLeft == Root->pRight)
+			{
+				delete Root;
+				Root = nullptr;
+			}
+			else
+			{
+				if (Count(Root->pLeft) > Count(Root->pRight))
+				{
+					Root->Data = maxValue(Root->pLeft);
+					erase(maxValue(Root->pLeft), Root->pLeft);
+				}
+				else
+				{
+					Root->Data = minValue(Root->pRight);
+					erase(minValue(Root->pRight), Root->pRight);
+				}
+			}
+		}
+	}
+	void erase_my(int Data, Element* Root)
 	{
 		if (!Root) Root = getRoot();
 		int count = 0;
@@ -248,9 +275,9 @@ public:
 		//		}
 		//	}
 		//}
-		//if (Root->pLeft) erase(Data, Root->pLeft);
+		//if (Root->pLeft) erase_my(Data, Root->pLeft);
 		//else return;
-		//if (Root->pRight) erase(Data, Root->pRight);
+		//if (Root->pRight) erase_my(Data, Root->pRight);
 		//else return;
 	}
 	void balance(Element* Root)
@@ -333,7 +360,16 @@ public:
 	}
 
 };
-template<typename T> void measure(Tree* tree, T (Tree::*function)())
+
+template<typename T>void measure(const char* message, const Tree *tree, T(Tree::*member_function)()const) //code with OA
+{
+	clock_t start = clock();
+	T result = (tree->*member_function)();
+	clock_t end = clock();
+	std::cout << message << " выполнено за " << double(end - start) / CLOCKS_PER_SEC << " секунд.\n";
+}
+
+template<typename T> void measure(const char* message, Tree *tree, T (Tree::*function)())
 {
 	clock_t start = clock();
 	T result =(tree->*function)();
@@ -366,26 +402,21 @@ void main()
 	Tree tree;
 	std::cout << "Дерево заполнено за ";
 	measure(tree, n, &filling);
-
-	std::cout << "Минимальное значение в дереве: ";
-	measure(&tree, &Tree::minValue);
-
-	std::cout << "Максимальное значение в дереве: ";
-	measure(&tree, &Tree::maxValue);
-	
-	std::cout << "Сумма Элементов дерева:\t\t ";
-	measure(&tree, &Tree::sum);
-
-	std::cout << "Кол-во элементов дерева :\t ";
-	measure(&tree, &Tree::Count);
-
-	std::cout << "Средне-арифметическое элементов дерева :\t ";
-	measure(&tree, &Tree::Avg);
-
-	std::cout << "Глубина дерева равна: \t";
-	measure(&tree, &Tree::depth);
+	tree.print();
+	measure("Минимальное значение в дереве: " , &tree, &Tree::minValue);
+	measure("Максимальное значение в дереве: " , &tree, &Tree::maxValue);
+	measure("Сумма Элементов дерева:\t\t ", &tree, &Tree::sum);
+	measure("Кол-во элементов дерева :\t ", &tree, &Tree::Count);
+	measure("Средне-арифметическое элементов дерева :\t ", &tree, &Tree::Avg);
+	measure("Глубина дерева равна: \t", &tree, &Tree::depth);
 	system("PAUSE");
 
+	int value;
+	std::cout << "Введите удаляемое значение: "; std::cin >> value;
+	tree.erase(value);
+	tree.print();
+	std::cout << std::endl << std::endl;
+	//tree.tree_print();
 	std::cout << delimitr << std::endl;
 
 	UniqueTree u_tree;
@@ -405,6 +436,9 @@ void main()
 #ifdef INITIALIZER_CHEK
 	Tree tree2 = { 50, 25, 75, 16, 32, 64, 90, 28 };
 	tree2.print();
+	std::cout << std::endl << std::endl;
+	tree2.tree_print();
+	std::cout << std::endl << std::endl;
 	std::cout << "Глубина дерева: " << tree2.depth() << std::endl;
 	//std::cout << std::endl << std::endl;
 	//tree2.tree_print();
