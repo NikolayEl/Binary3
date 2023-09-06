@@ -1,4 +1,4 @@
-#include <iostream>
+ï»¿#include <iostream>
 #include<ctime>
 #define delimitr "\n------------------------------------------------------\n"
 
@@ -218,7 +218,7 @@ public:
 			insert(array[i]);
 		}
 		delete[] array;
-		//std::cout << std::endl << "Êîðåíü ðàâåí = " << Root->Data << std::endl;
+		//std::cout << std::endl << "ÐšÐ¾Ñ€ÐµÐ½ÑŒ Ñ€Ð°Ð²ÐµÐ½ = " << Root->Data << std::endl;
 		//if (!Root) Root = getRoot();
 		//if (Root->pLeft->Data == Data && Root->pRight->Data == Data)
 		//{
@@ -338,7 +338,7 @@ template<typename T> void measure(Tree* tree, T (Tree::*function)())
 	clock_t start = clock();
 	T result =(tree->*function)();
 	clock_t end = clock();
-	std::cout << result << ", âû÷åñëåíî çà " << double(end - start) / CLOCKS_PER_SEC << " ñåêóíä\n";
+	std::cout << result << ", Ð²Ñ‹Ñ‡ÐµÑÐ»ÐµÐ½Ð¾ Ð·Ð° " << double(end - start) / CLOCKS_PER_SEC << " ÑÐµÐºÑƒÐ½Ð´\n";
 }
 typedef void (*func)(Tree& tree, int n);
 void measure(Tree& tree, int n, func function)
@@ -346,7 +346,7 @@ void measure(Tree& tree, int n, func function)
 	clock_t start = clock();
 	function(tree, n);
 	clock_t end = clock();
-	std::cout << " " << double(end - start) / CLOCKS_PER_SEC << " ñåêóíä\n";
+	std::cout << " " << double(end - start) / CLOCKS_PER_SEC << " ÑÐµÐºÑƒÐ½Ð´\n";
 }
 void filling(Tree& tree, int n)
 {
@@ -362,27 +362,27 @@ void main()
 	setlocale(LC_ALL, "");
 #ifdef FUNCION_TREE_CHEK
 	int n;
-	std::cout << "Ââåäèòå ðàçìåð äåðåâà: "; std::cin >> n;
+	std::cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ñ€Ð°Ð·Ð¼ÐµÑ€ Ð´ÐµÑ€ÐµÐ²Ð°: "; std::cin >> n;
 	Tree tree;
-	std::cout << "Äåðåâî çàïîëíåíî çà ";
+	std::cout << "Ð”ÐµÑ€ÐµÐ²Ð¾ Ð·Ð°Ð¿Ð¾Ð»Ð½ÐµÐ½Ð¾ Ð·Ð° ";
 	measure(tree, n, &filling);
 
-	std::cout << "Ìèíèìàëüíîå çíà÷åíèå â äåðåâå: ";
+	std::cout << "ÐœÐ¸Ð½Ð¸Ð¼Ð°Ð»ÑŒÐ½Ð¾Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð² Ð´ÐµÑ€ÐµÐ²Ðµ: ";
 	measure(&tree, &Tree::minValue);
 
-	std::cout << "Ìàêñèìàëüíîå çíà÷åíèå â äåðåâå: ";
+	std::cout << "ÐœÐ°ÐºÑÐ¸Ð¼Ð°Ð»ÑŒÐ½Ð¾Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð² Ð´ÐµÑ€ÐµÐ²Ðµ: ";
 	measure(&tree, &Tree::maxValue);
 	
-	std::cout << "Ñóììà Ýëåìåíòîâ äåðåâà:\t\t ";
+	std::cout << "Ð¡ÑƒÐ¼Ð¼Ð° Ð­Ð»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² Ð´ÐµÑ€ÐµÐ²Ð°:\t\t ";
 	measure(&tree, &Tree::sum);
 
-	std::cout << "Êîë-âî ýëåìåíòîâ äåðåâà :\t ";
+	std::cout << "ÐšÐ¾Ð»-Ð²Ð¾ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² Ð´ÐµÑ€ÐµÐ²Ð° :\t ";
 	measure(&tree, &Tree::Count);
 
-	std::cout << "Ñðåäíå-àðèôìåòè÷åñêîå ýëåìåíòîâ äåðåâà :\t ";
+	std::cout << "Ð¡Ñ€ÐµÐ´Ð½Ðµ-Ð°Ñ€Ð¸Ñ„Ð¼ÐµÑ‚Ð¸Ñ‡ÐµÑÐºÐ¾Ðµ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² Ð´ÐµÑ€ÐµÐ²Ð° :\t ";
 	measure(&tree, &Tree::Avg);
 
-	std::cout << "Ãëóáèíà äåðåâà ðàâíà: \t";
+	std::cout << "Ð“Ð»ÑƒÐ±Ð¸Ð½Ð° Ð´ÐµÑ€ÐµÐ²Ð° Ñ€Ð°Ð²Ð½Ð°: \t";
 	measure(&tree, &Tree::depth);
 	system("PAUSE");
 
@@ -395,17 +395,17 @@ void main()
 	}
 	//u_tree.print();
 	std::cout << std::endl;
-	std::cout << "Ìèíèìàëüíîå çíà÷åíèå â äåðåâå: " << u_tree.minValue() << std::endl;
-	std::cout << "Ìàêñèìàëüíîå çíà÷åíèå â äåðåâå: " << u_tree.maxValue() << std::endl;
-	std::cout << "Ñóììà Ýëåìåíòîâ äåðåâà:\t\t " << u_tree.sum() << std::endl;
-	std::cout << "Êîë-âî ýëåìåíòîâ äåðåâà :\t " << u_tree.Count() << std::endl;
-	std::cout << "Ñðåäíå-àðèôìåòè÷åñêîå ýëåìåíòîâ äåðåâà :\t " << u_tree.Avg() << std::endl;
-	std::cout << "Ãëóáèíà äåðåâà ðàâíà: \t" << u_tree.depth() << std::endl;
+	std::cout << "ÐœÐ¸Ð½Ð¸Ð¼Ð°Ð»ÑŒÐ½Ð¾Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð² Ð´ÐµÑ€ÐµÐ²Ðµ: " << u_tree.minValue() << std::endl;
+	std::cout << "ÐœÐ°ÐºÑÐ¸Ð¼Ð°Ð»ÑŒÐ½Ð¾Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð² Ð´ÐµÑ€ÐµÐ²Ðµ: " << u_tree.maxValue() << std::endl;
+	std::cout << "Ð¡ÑƒÐ¼Ð¼Ð° Ð­Ð»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² Ð´ÐµÑ€ÐµÐ²Ð°:\t\t " << u_tree.sum() << std::endl;
+	std::cout << "ÐšÐ¾Ð»-Ð²Ð¾ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² Ð´ÐµÑ€ÐµÐ²Ð° :\t " << u_tree.Count() << std::endl;
+	std::cout << "Ð¡Ñ€ÐµÐ´Ð½Ðµ-Ð°Ñ€Ð¸Ñ„Ð¼ÐµÑ‚Ð¸Ñ‡ÐµÑÐºÐ¾Ðµ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² Ð´ÐµÑ€ÐµÐ²Ð° :\t " << u_tree.Avg() << std::endl;
+	std::cout << "Ð“Ð»ÑƒÐ±Ð¸Ð½Ð° Ð´ÐµÑ€ÐµÐ²Ð° Ñ€Ð°Ð²Ð½Ð°: \t" << u_tree.depth() << std::endl;
 #endif // FUNCION_TREE_CHEK
 #ifdef INITIALIZER_CHEK
 	Tree tree2 = { 50, 25, 75, 16, 32, 64, 90, 28 };
 	tree2.print();
-	std::cout << "Ãëóáèíà äåðåâà: " << tree2.depth() << std::endl;
+	std::cout << "Ð“Ð»ÑƒÐ±Ð¸Ð½Ð° Ð´ÐµÑ€ÐµÐ²Ð°: " << tree2.depth() << std::endl;
 	//std::cout << std::endl << std::endl;
 	//tree2.tree_print();
 #endif // INITIALIZER_CHEK
@@ -413,7 +413,7 @@ void main()
 #ifdef BALANCE_CHEK
 	setlocale(LC_ALL, "");
 	int n;
-	std::cout << "Ââåäèòå ðàçìåð äåðåâà: "; std::cin >> n;
+	std::cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ñ€Ð°Ð·Ð¼ÐµÑ€ Ð´ÐµÑ€ÐµÐ²Ð°: "; std::cin >> n;
 	Tree tree2 = { 3, 5, 8, 13, 21, 34, 55, 89 };
 	//for (int i = 0; i < n; i++) tree2.insert(rand() % 100);
 	//tree2.print();
