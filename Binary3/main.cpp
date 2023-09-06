@@ -61,17 +61,21 @@ public:
 	{
 		return insert(Data, Root);
 	}
-	int minValue() const
+	int minValue()
 	{
 		return minValue(Root);
 	}
-	int maxValue() const
+	int maxValue()
 	{
 		return maxValue(Root);
 	}
 	int sum()
 	{
 		return sum(Root);
+	}
+	int result()
+	{
+		return Root->Data;
 	}
 	int Count()
 	{
@@ -110,11 +114,7 @@ public:
 	{
 		return print(Root);
 	}
-	int depth() const
-	{
-		return depth(Root);
-	}
-private:
+//private:
 	//-----------------------------------------------------------------------------------------------
 	void Clear(Element* Root)
 	{
@@ -305,6 +305,8 @@ private:
 	}
 	friend class UniqueTree;
 	friend class Element;
+	template<typename T> friend void measure(Tree* tree, T(Tree::* function)());
+	
 };
 
 class UniqueTree: public Tree
@@ -331,6 +333,25 @@ public:
 	}
 
 };
+template<typename T> void measure(Tree* tree, T (Tree::*function)())
+{
+	clock_t start = clock();
+	T result =(tree->*function)();
+	clock_t end = clock();
+	std::cout << result << ", вычеслено за " << double(end - start) / CLOCKS_PER_SEC << " секунд\n";
+}
+typedef void (*func)(Tree& tree, int n);
+void measure(Tree& tree, int n, func function)
+{
+	clock_t start = clock();
+	function(tree, n);
+	clock_t end = clock();
+	std::cout << " " << double(end - start) / CLOCKS_PER_SEC << " секунд\n";
+}
+void filling(Tree& tree, int n)
+{
+	for (int i = 0; i < n; i++) tree.insert(rand() % 100);
+}
 
 #define FUNCION_TREE_CHEK
 //#define INITIALIZER_CHEK
@@ -343,55 +364,26 @@ void main()
 	int n;
 	std::cout << "Введите размер дерева: "; std::cin >> n;
 	Tree tree;
-	clock_t start = clock();
-	for (int i = 0; i < n; i++)
-	{
-		tree.insert(rand() % 100);
-	}
-	clock_t end = clock();
-	std::cout << "Дерево заполнено за " << double(end - start) / CLOCKS_PER_SEC << " секунд\n";
-	//tree.Clear();
-	//tree.print();
-	std::cout << std::endl;
-	/////////////////////////////////////////////////////////////////////////////////////////////////////
+	std::cout << "Дерево заполнено за ";
+	measure(tree, n, &filling);
+
 	std::cout << "Минимальное значение в дереве: ";
-	start = clock();
-	int min = tree.minValue();
-	end = clock();
-	std::cout << min << ", вычеслено за " << double(end - start) / CLOCKS_PER_SEC << " секунд\n";
-	/////////////////////////////////////////////////////////////////////////////////////////////////////
+	measure(&tree, &Tree::minValue);
+
 	std::cout << "Максимальное значение в дереве: ";
-	start = clock();
-	int max = tree.maxValue();
-	end = clock();
-	std::cout << max << ", вычеслено за " << double(end - start) / CLOCKS_PER_SEC << " секунд\n";
-	/////////////////////////////////////////////////////////////////////////////////////////////////////
+	measure(&tree, &Tree::maxValue);
+	
 	std::cout << "Сумма Элементов дерева:\t\t ";
-	start = clock();
-	int sum = tree.sum();
-	end = clock();
-	std::cout << sum << ", вычеслено за " << double(end - start) / CLOCKS_PER_SEC << " секунд\n";
-	/////////////////////////////////////////////////////////////////////////////////////////////////////
+	measure(&tree, &Tree::sum);
+
 	std::cout << "Кол-во элементов дерева :\t ";
-	start = clock();
-	int count = tree.Count();
-	end = clock();
-	std::cout << count << ", вычеслено за " << double(end - start) / CLOCKS_PER_SEC << " секунд\n";
-	/////////////////////////////////////////////////////////////////////////////////////////////////////
+	measure(&tree, &Tree::Count);
+
 	std::cout << "Средне-арифметическое элементов дерева :\t ";
-	start = clock();
-	int avg = tree.Avg();
-	end = clock();
-	std::cout << avg << ", вычеслено за " << double(end - start) / CLOCKS_PER_SEC << " секунд\n";
-	/////////////////////////////////////////////////////////////////////////////////////////////////////
+	measure(&tree, &Tree::Avg);
+
 	std::cout << "Глубина дерева равна: \t";
-	start = clock();
-	int depth = tree.depth();
-	end = clock();
-	std::cout << depth << ", вычеслено за " << double(end - start) / CLOCKS_PER_SEC << " секунд\n";
-	/////////////////////////////////////////////////////////////////////////////////////////////////////
-	//std::cout << "Введите удаляемое значение: "; int erase_number; std::cin >> erase_number;
-	//tree.erase(erase_number);
+	measure(&tree, &Tree::depth);
 	system("PAUSE");
 
 	std::cout << delimitr << std::endl;
