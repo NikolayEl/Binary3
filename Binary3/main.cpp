@@ -443,9 +443,6 @@ void main()
 	system("cls");
 	tree2.balance();
 	tree2.tree_print();
-	system("PAUSE");
-	system("cls");
-	tree2.tree_print();
 
 #endif // INITIALIZER_CHEK
 
