@@ -93,9 +93,9 @@ public:
 	{
 		return to_array(arr, count, Root);
 	}
-	void erase_my(int Data)
+	void erase_one_element(int Data)
 	{
-		return erase_my(Data, Root);
+		return erase_one_element(Data, Root);
 	}
 	void Clear()
 	{
@@ -117,6 +117,10 @@ public:
 	void balance()
 	{
 		return balance(Root);
+	}
+	void balance_no_ideal()
+	{
+		return balance_no_ideal(Root);
 	}
 private:
 	//-----------------------------------------------------------------------------------------------
@@ -227,6 +231,32 @@ private:
 			}
 		}
 	}
+	void erase_one_element(int Data, Element*& Root)
+	{
+		if (Root == nullptr) return;
+		if (Data == Root->Data)
+		{
+			if (Root->pLeft == Root->pRight)
+			{
+				delete Root;
+				Root = nullptr;
+				return;
+			}
+			else
+			{
+				if (Count(Root->pLeft) > Count(Root->pRight))
+				{
+					Root->Data = maxValue(Root->pLeft);
+				}
+				else
+				{
+					Root->Data = minValue(Root->pRight);
+				}
+			}
+		}
+		erase_one_element(Data, Root->pLeft);
+		erase_one_element(Data, Root->pRight);
+	}
 	void balance(Element*& Root)
 	{
 		if (Root == nullptr) return;
@@ -255,62 +285,34 @@ private:
 			balance(Root);
 		}
 	}
-	void erase_my(int Data, Element* Root)
+	void balance_no_ideal(Element*& Root)
 	{
-		if (!Root) Root = getRoot();
-		int count = 0;
-		int* array = new int[Count()];
-		to_array(array, count);
-		print();
-		Destructor();
-		print();
-		int average = (count % 2 == 0? (count / 2): (count / 2 + 1));
-		Root->Data = array[average];
-		for (int i = average - 1; i > -1; i--)
+		if (Root == nullptr) return;
+		balance_no_ideal(Root->pLeft);
+		balance_no_ideal(Root->pRight);
+		if (Count(Root) % 2 != 0 ? Count(Root->pLeft) == Count(Root->pRight) : Count(Root->pLeft) == Count(Root->pRight) + 1)
 		{
-			if (array[i] == Data) continue;
-			insert(array[i]);
+			return;
 		}
-		for (int i = average + 1; i < count; i++) 
+		else
 		{
-			if (array[i] == Data) continue;
-			insert(array[i]);
+			if (Count(Root->pLeft) > Count(Root->pRight))
+			{
+				if (Root->pRight)insert(Root->Data, Root->pRight);
+				else Root->pRight = new Element(Root->Data);
+				Root->Data = maxValue(Root->pLeft);
+				erase_one_element(maxValue(Root->pLeft), Root->pLeft);
+			}
+			else
+			{
+				if (Root->pLeft)insert(Root->Data, Root->pLeft);
+				else Root->pLeft = new Element(Root->Data);
+				Root->Data = minValue(Root->pRight);
+				erase_one_element(minValue(Root->pRight), Root->pRight);
+			}
+			balance_no_ideal(Root);
 		}
-		delete[] array;
 	}
-	//void balance_my(Element* Root)
-	//{
-	//	if (!Root) Root = getRoot();
-	//	int count = 0;
-	//	int* array = new int[Count()];
-	//	to_array(array, count);
-	//	print();
-	//	Destructor();
-	//	print();
-	//	int average = (count % 2 == 0 ? (count / 2) : (count / 2 + 1)) + 1;
-	//	Root->Data = array[average];
-	//	for (int i = average - 1; i > -1; i--)
-	//	{
-	//		if (i % 4 != 0) continue;
-	//		insert(array[i]);
-	//	}
-	//	for (int i = average - 1; i > -1; i--)
-	//	{
-	//		if (i % 4 == 0) continue;
-	//		insert(array[i]);
-	//	}
-	//	for (int i = average + 1; i < count; i++)
-	//	{
-	//		if (i % 4 != 0) continue;
-	//		insert(array[i]);
-	//	}	
-	//	for (int i = average + 1; i < count; i++)
-	//	{
-	//		if (i % 4 == 0) continue;
-	//		insert(array[i]);
-	//	}
-	//	delete[] array;
-	//}
 	void tree_print(Element* Root, int depth) const
 	{
 		if (Root)
@@ -433,7 +435,6 @@ void main()
 #endif // FUNCION_TREE_CHEK
 #ifdef INITIALIZER_CHEK
 	Tree tree2 = { 16, 25, 32, 50, 64, 75, 90};
-	tree2.print();
 	std::cout << std::endl << std::endl;
 	tree2.tree_print();	
 	std::cout << std::endl << std::endl;
@@ -441,11 +442,11 @@ void main()
 	system("PAUSE");
 	system("cls");
 	tree2.balance();
-	tree2.print();
-	std::cout << std::endl << std::endl;
 	tree2.tree_print();
-	//std::cout << std::endl << std::endl;
-	//tree2.tree_print();
+	system("PAUSE");
+	system("cls");
+	tree2.tree_print();
+
 #endif // INITIALIZER_CHEK
 
 #ifdef BALANCE_CHEK
