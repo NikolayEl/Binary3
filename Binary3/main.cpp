@@ -102,10 +102,10 @@ public:
 		Clear(Root);
 		Root = nullptr;
 	}
-	void balance()
-	{
-		return balance(Root);
-	}
+	//void balance_my()
+	//{
+	//	return balance_my(Root);
+	//}
 	void tree_print() const
 	{
 		tree_print(Root, 0);
@@ -113,6 +113,10 @@ public:
 	void print() const
 	{
 		return print(Root);
+	}
+	void balance()
+	{
+		return balance(Root);
 	}
 private:
 	//-----------------------------------------------------------------------------------------------
@@ -223,6 +227,34 @@ private:
 			}
 		}
 	}
+	void balance(Element*& Root)
+	{
+		if (Root == nullptr) return;
+		balance(Root->pLeft);
+		balance(Root->pRight);
+		if (Count(Root) % 2 != 0 ? Count(Root->pLeft) == Count(Root->pRight) : Count(Root->pLeft) == Count(Root->pRight) + 1)
+		{
+			return;
+		}
+		else
+		{
+			if (Count(Root->pLeft) > Count(Root->pRight))
+			{
+				if (Root->pRight)insert(Root->Data, Root->pRight);
+				else Root->pRight = new Element(Root->Data);
+				Root->Data = maxValue(Root->pLeft);
+				erase(maxValue(Root->pLeft), Root->pLeft);
+			}
+			else
+			{
+				if (Root->pLeft)insert(Root->Data, Root->pLeft);
+				else Root->pLeft = new Element(Root->Data);
+				Root->Data = minValue(Root->pRight);
+				erase(minValue(Root->pRight), Root->pRight);
+			}
+			balance(Root);
+		}
+	}
 	void erase_my(int Data, Element* Root)
 	{
 		if (!Root) Root = getRoot();
@@ -245,74 +277,40 @@ private:
 			insert(array[i]);
 		}
 		delete[] array;
-		//std::cout << std::endl << "Корень равен = " << Root->Data << std::endl;
-		//if (!Root) Root = getRoot();
-		//if (Root->pLeft->Data == Data && Root->pRight->Data == Data)
-		//{
-		//	Element* temp;
-		//	if (Root->pLeft?Root->pLeft->Data == Data: 0) 
-		//	{
-		//		temp = Root->pLeft;
-		//		if (Root->pLeft->pRight)
-		//		{
-		//			Root->pLeft = Root->pLeft->pRight;
-		//			Root->pLeft->pLeft = temp->pLeft;
-		//			delete temp;
-		//		}
-		//		else if (Root->pLeft->pLeft)
-		//		{
-
-		//		}
-		//	}
-		//	else if (Root->pRight ? Root->pRight->Data == Data : 0)
-		//	{
-		//		temp = Root->pRight;
-		//		if (Root->pRight->pLeft)
-		//		{
-		//			Root->pRight = Root->pRight->pLeft;
-		//			Root->pRight->pRight = temp->pRight;
-		//			delete temp;
-		//		}
-		//	}
-		//}
-		//if (Root->pLeft) erase_my(Data, Root->pLeft);
-		//else return;
-		//if (Root->pRight) erase_my(Data, Root->pRight);
-		//else return;
 	}
-	void balance(Element* Root)
-	{
-		if (!Root) Root = getRoot();
-		int count = 0;
-		int* array = new int[Count()];
-		to_array(array, count);
-		print();
-		Destructor();
-		print();
-		int average = (count % 2 == 0 ? (count / 2) : (count / 2 + 1)) + 1;
-		Root->Data = array[average];
-		for (int i = average - 1; i > -1; i--)
-		{
-			if (i % 4 != 0) continue;
-			insert(array[i]);
-		}
-		for (int i = average - 1; i > -1; i--)
-		{
-			if (i % 4 == 0) continue;
-			insert(array[i]);
-		}
-		for (int i = average + 1; i < count; i++)
-		{
-			if (i % 4 != 0) continue;
-			insert(array[i]);
-		}	
-		for (int i = average + 1; i < count; i++)
-		{
-			if (i % 4 == 0) continue;
-			insert(array[i]);
-		}
-		delete[] array;
-	}
+	//void balance_my(Element* Root)
+	//{
+	//	if (!Root) Root = getRoot();
+	//	int count = 0;
+	//	int* array = new int[Count()];
+	//	to_array(array, count);
+	//	print();
+	//	Destructor();
+	//	print();
+	//	int average = (count % 2 == 0 ? (count / 2) : (count / 2 + 1)) + 1;
+	//	Root->Data = array[average];
+	//	for (int i = average - 1; i > -1; i--)
+	//	{
+	//		if (i % 4 != 0) continue;
+	//		insert(array[i]);
+	//	}
+	//	for (int i = average - 1; i > -1; i--)
+	//	{
+	//		if (i % 4 == 0) continue;
+	//		insert(array[i]);
+	//	}
+	//	for (int i = average + 1; i < count; i++)
+	//	{
+	//		if (i % 4 != 0) continue;
+	//		insert(array[i]);
+	//	}	
+	//	for (int i = average + 1; i < count; i++)
+	//	{
+	//		if (i % 4 == 0) continue;
+	//		insert(array[i]);
+	//	}
+	//	delete[] array;
+	//}
 	void tree_print(Element* Root, int depth) const
 	{
 		if (Root)
@@ -389,8 +387,8 @@ void filling(Tree& tree, int n)
 	for (int i = 0; i < n; i++) tree.insert(rand() % 100);
 }
 
-#define FUNCION_TREE_CHEK
-//#define INITIALIZER_CHEK
+//#define FUNCION_TREE_CHEK
+#define INITIALIZER_CHEK
 //#define BALANCE_CHEK
 
 void main()
@@ -434,12 +432,18 @@ void main()
 	std::cout << "Глубина дерева равна: \t" << u_tree.depth() << std::endl;
 #endif // FUNCION_TREE_CHEK
 #ifdef INITIALIZER_CHEK
-	Tree tree2 = { 50, 25, 75, 16, 32, 64, 90, 28 };
+	Tree tree2 = { 16, 25, 32, 50, 64, 75, 90};
+	tree2.print();
+	std::cout << std::endl << std::endl;
+	tree2.tree_print();	
+	std::cout << std::endl << std::endl;
+	std::cout << "Глубина дерева: " << tree2.depth() << std::endl;
+	system("PAUSE");
+	system("cls");
+	tree2.balance();
 	tree2.print();
 	std::cout << std::endl << std::endl;
 	tree2.tree_print();
-	std::cout << std::endl << std::endl;
-	std::cout << "Глубина дерева: " << tree2.depth() << std::endl;
 	//std::cout << std::endl << std::endl;
 	//tree2.tree_print();
 #endif // INITIALIZER_CHEK
@@ -454,7 +458,7 @@ void main()
 	system("PAUSE");
 	system("cls");
 	tree2.tree_print();
-	tree2.balance();
+	tree2.balance_my();
 	system("PAUSE");
 	system("cls");
 	tree2.tree_print();
