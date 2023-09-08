@@ -106,21 +106,33 @@ public:
 	//{
 	//	return balance_my(Root);
 	//}
-	void tree_print() const
+	//void balance()
+	//{
+	//	return balance(Root);
+	//}
+	void balance_my()
 	{
-		tree_print(Root, 0);
+		return balance_my(Root);
+	}
+	void balance_no_ideal()
+	{
+		return balance_no_ideal(Root);
+	}
+	void tree_print_my() const
+	{
+		tree_print_my(Root, 0);
 	}
 	void print() const
 	{
 		return print(Root);
 	}
-	void balance()
+	void depth_print(int depth)const
 	{
-		return balance(Root);
+		depth_print(Root, depth, 64);
 	}
-	void balance_no_ideal()
+	void tree_print()const
 	{
-		return balance_no_ideal(Root);
+		tree_print(Root, 64);
 	}
 private:
 	//-----------------------------------------------------------------------------------------------
@@ -185,9 +197,9 @@ private:
 	}
 	int depth(Element* Root) const
 	{
-		//return Root == nullptr ? 0 : (!Root->pLeft ? 1 : depth(Root->pLeft) + 1) > (!Root->pRight ? 1 : 
-		//	depth(Root->pRight) + 1) ? (!Root->pLeft ? 1 : depth(Root->pLeft) + 1): 
-		//	(!Root->pRight ? 1 : depth(Root->pRight) + 1);
+		//return Root == nullptr ? 0 : (!Root->pLeft ? 1 : asjusted_depth(Root->pLeft) + 1) > (!Root->pRight ? 1 : 
+		//	asjusted_depth(Root->pRight) + 1) ? (!Root->pLeft ? 1 : asjusted_depth(Root->pLeft) + 1): 
+		//	(!Root->pRight ? 1 : asjusted_depth(Root->pRight) + 1);
 
 		if (Root == nullptr) return 0;
 		int l_depth = depth(Root->pLeft) + 1;
@@ -257,11 +269,11 @@ private:
 		erase_one_element(Data, Root->pLeft);
 		erase_one_element(Data, Root->pRight);
 	}
-	void balance(Element*& Root)
+	void balance_my(Element*& Root)
 	{
 		if (Root == nullptr) return;
-		balance(Root->pLeft);
-		balance(Root->pRight);
+		//balance_my(Root->pLeft);
+		//balance_my(Root->pRight);
 		if (Count(Root) % 2 != 0 ? Count(Root->pLeft) == Count(Root->pRight) : Count(Root->pLeft) == Count(Root->pRight) + 1)
 		{
 			return;
@@ -282,7 +294,7 @@ private:
 				Root->Data = minValue(Root->pRight);
 				erase(minValue(Root->pRight), Root->pRight);
 			}
-			balance(Root);
+			balance_my(Root);
 		}
 	}
 	void balance_no_ideal(Element*& Root)
@@ -313,14 +325,14 @@ private:
 			balance_no_ideal(Root);
 		}
 	}
-	void tree_print(Element* Root, int depth) const
+	void tree_print_my(Element* Root, int depth) const
 	{
 		if (Root)
 		{
-			if(Root->pRight)tree_print(Root->pRight, depth + 1);
+			if(Root->pRight)tree_print_my(Root->pRight, depth + 1);
 			for (int i = 0; i < depth; i++) std::cout << "	";
 			std::cout << Root->Data << std::endl;
-			if(Root->pLeft)tree_print(Root->pLeft, depth + 1);
+			if(Root->pLeft)tree_print_my(Root->pLeft, depth + 1);
 		}
 	}
 	void print(Element* Root) const
@@ -330,6 +342,39 @@ private:
 		std::cout << Root->Data << "\t";
 		if (Root->pRight)print(Root->pRight);
 	}
+	void depth_print(Element* Root, int depth, int width)const
+	{
+		//adjusted_depth - заданная глубина
+		if (!Root)
+		{
+			if(depth == 0)std::cout.width(width * 2);
+			std::cout << "";
+			return;
+		}
+		if (depth == 0)
+		{
+			std::cout.width(width);
+			std::cout << Root->Data;
+			std::cout.width(width);
+			std::cout << " ";
+		}
+		depth_print(Root->pLeft, depth - 1, width);
+		depth_print(Root->pRight, depth - 1, width);
+	}
+	void tree_print(Element* Root, int width, int depth = 0) const
+	{
+		if (!Root) return;
+		if (depth >= this->depth())return;
+		depth_print(Root, depth, width);
+		std::cout << std::endl;
+		std::cout << std::endl;
+		std::cout << std::endl;
+		std::cout << std::endl;
+		tree_print(Root, width / 2, depth + 1);
+		depth++;
+
+	}
+
 	friend class UniqueTree;
 	friend class Element;
 	template<typename T> friend void measure(Tree* tree, T(Tree::* function)());
@@ -390,8 +435,8 @@ void filling(Tree& tree, int n)
 }
 
 //#define FUNCION_TREE_CHEK
-#define INITIALIZER_CHEK
-//#define BALANCE_CHEK
+//#define INITIALIZER_CHEK
+#define BALANCE_CHEK
 
 void main()
 {
@@ -408,7 +453,7 @@ void main()
 	measure("Сумма Элементов дерева:\t\t ", &tree, &Tree::sum);
 	measure("Кол-во элементов дерева :\t ", &tree, &Tree::Count);
 	measure("Средне-арифметическое элементов дерева :\t ", &tree, &Tree::Avg);
-	measure("Глубина дерева равна: \t", &tree, &Tree::depth);
+	measure("Глубина дерева равна: \t", &tree, &Tree::asjusted_depth);
 	system("PAUSE");
 
 	int value;
@@ -416,7 +461,7 @@ void main()
 	tree.erase(value);
 	tree.print();
 	std::cout << std::endl << std::endl;
-	//tree.tree_print();
+	//tree.tree_print_my();
 	std::cout << delimitr << std::endl;
 
 	UniqueTree u_tree;
@@ -431,30 +476,29 @@ void main()
 	std::cout << "Сумма Элементов дерева:\t\t " << u_tree.sum() << std::endl;
 	std::cout << "Кол-во элементов дерева :\t " << u_tree.Count() << std::endl;
 	std::cout << "Средне-арифметическое элементов дерева :\t " << u_tree.Avg() << std::endl;
-	std::cout << "Глубина дерева равна: \t" << u_tree.depth() << std::endl;
+	std::cout << "Глубина дерева равна: \t" << u_tree.asjusted_depth() << std::endl;
 #endif // FUNCION_TREE_CHEK
 #ifdef INITIALIZER_CHEK
-	Tree tree2 = { 16, 25, 32, 50, 64, 75, 90};
-	std::cout << std::endl << std::endl;
-	tree2.tree_print();	
-	std::cout << std::endl << std::endl;
+	Tree tree2 = { 50, 25, 75, 16, 32, 64, 90, 28, 29};
+	//std::cout << std::endl << std::endl;
+	//tree2.tree_print_my();	
+	//system("PAUSE");
+	//system("cls");
+	//tree2.balance_my();
+	//tree2.tree_print_my();
+	tree2.print();
+	std::cout << std::endl;
 	std::cout << "Глубина дерева: " << tree2.depth() << std::endl;
-	system("PAUSE");
-	system("cls");
-	tree2.balance();
+	//int depth;
+	//std::cout << "Введите глубину дерева: "; std::cin >> depth;
 	tree2.tree_print();
 
 #endif // INITIALIZER_CHEK
 
 #ifdef BALANCE_CHEK
 	setlocale(LC_ALL, "");
-	int n;
-	std::cout << "Введите размер дерева: "; std::cin >> n;
-	Tree tree2 = { 3, 5, 8, 13, 21, 34, 55, 89 };
-	//for (int i = 0; i < n; i++) tree2.insert(rand() % 100);
-	//tree2.print();
-	system("PAUSE");
-	system("cls");
+	//Tree tree2 = { 3, 5, 8, 13, 21, 34, 55, 89 };
+	Tree tree2 = { 89, 55, 34, 21, 13, 8, 5, 3 };
 	tree2.tree_print();
 	tree2.balance_my();
 	system("PAUSE");
