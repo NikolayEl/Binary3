@@ -1,7 +1,6 @@
 ﻿#include <iostream>
 #include<ctime>
 #define delimitr "\n------------------------------------------------------\n"
-
 class Tree
 {
 protected:
