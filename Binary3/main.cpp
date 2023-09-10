@@ -19,7 +19,6 @@ protected:
 #ifdef DEBUG
 			std::cout << "EConstructor:\t" << this << std::endl;
 #endif // DEBUG
-
 		}
 		~Element()
 		{
