@@ -428,15 +428,7 @@ template<class A, class B> void measure(const char* message, Tree<A>* tree, B (T
 	clock_t end = clock();
 	std::cout << message << result << ", вычеслено за " << double(end - start) / CLOCKS_PER_SEC << " секунд\n";
 }
-// 
-//template<typename A> typedef void (*func)(Tree<A>& tree, int n);
-//template<typename A> void measure(Tree<A>& tree, int n, func function)
-//{
-//	clock_t start = clock();
-//	function(tree, n);
-//	clock_t end = clock();
-//	std::cout << " " << double(end - start) / CLOCKS_PER_SEC << " секунд\n";
-//}
+
 void filling(Tree<int> *tree, int n)
 {
 	for (int i = 0; i < n; i++) tree->insert(rand() % 100);
@@ -477,13 +469,10 @@ void main()
 	system("PAUSE");
 
 	double value;
-	//value = (rand() % 1000) / 10;
-	//std::cout << value << std::endl;
 	std::cout << "Введите удаляемое значение: "; std::cin >> value;
 	tree.erase(value);
 	tree.print();
 	std::cout << std::endl << std::endl;
-	//tree.tree_print_my();
 	std::cout << delimitr << std::endl;
 
 	UniqueTree<double> u_tree;
@@ -499,17 +488,9 @@ void main()
 #endif // FUNCION_TREE_CHEK
 #ifdef INITIALIZER_CHEK
 	Tree<int> tree2 = { 50, 25, 75, 16, 32, 64, 90, 28, 29};
-	//std::cout << std::endl << std::endl;
-	//tree2.tree_print_my();	
-	//system("PAUSE");
-	//system("cls");
-	//tree2.balance_my();
-	//tree2.tree_print_my();
 	tree2.print();
 	std::cout << std::endl;
 	std::cout << "Глубина дерева: " << tree2.depth() << std::endl;
-	//int depth;
-	//std::cout << "Введите глубину дерева: "; std::cin >> depth;
 	tree2.tree_print();
 
 #endif // INITIALIZER_CHEK
