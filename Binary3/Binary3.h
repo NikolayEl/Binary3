@@ -10,7 +10,7 @@ template<typename T> class UniqueTree;
 
 template<typename T>void measure(const char* message, const Tree<T>* tree, T(Tree<T>::* member_function)()const);
 template<typename T> void measure(const char* message, Tree<T>* tree, T(Tree<T>::* function)());
-template<typename T, class B>void measure(const char* message, const Tree<T>* tree, B(Tree<T>::* member_function)()const);
+template<class T, class B>void measure(const char* message, const Tree<T>* tree, B(Tree<T>::* member_function)()const);
 template<class T, class B> void measure(const char* message, Tree<T>* tree, B(Tree<T>::* function)());
 template<typename T> void filling(Tree<T>* tree, int n);
 

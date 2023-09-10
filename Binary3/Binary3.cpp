@@ -371,7 +371,7 @@ public:
 
 };
 
-template<typename T>void measure(const char* message, const Tree<T>* tree, T(Tree<T>::* member_function)()const) //code with OA
+template<typename T>void measure(const char* message, const Tree<T>* tree, T(Tree<T>::* member_function)()const) 
 {
 	clock_t start = clock();
 	T result = (tree->*member_function)();
@@ -387,7 +387,7 @@ template<typename T> void measure(const char* message, Tree<T>* tree, T(Tree<T>:
 	std::cout << message << result << ", вычеслено за " << double(end - start) / CLOCKS_PER_SEC << " секунд\n";
 }
 
-template<typename T, class B>void measure(const char* message, const Tree<T>* tree, B(Tree<T>::* member_function)()const) //code with OA
+template<class T, class B>void measure(const char* message, const Tree<T>* tree, B(Tree<T>::* member_function)()const)
 {
 	clock_t start = clock();
 	B result = (tree->*member_function)();
