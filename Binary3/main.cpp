@@ -2,24 +2,19 @@
 #include<ctime>
 #define delimitr "\n------------------------------------------------------\n"
 
-template<class A> class Tree;
-template<typename A> class UniqueTree;
+template<class T> class Tree;
+template<typename T> class UniqueTree;
 
-template<class A> class Tree
+template<class T> class Tree
 {
 protected:
 	class Element
 	{
-		A Data;
+		T Data;
 		Element* pLeft;
 		Element* pRight;
 	public:
-		Element(A Data, Element* pLeft = nullptr, Element* pRight = nullptr) :Data(Data), pLeft(pLeft), pRight(pRight)
-		{
-#ifdef DEBUG
-			std::cout << "EConstructor:\t" << this << std::endl;
-#endif // DEBUG
-		}
+		Element(T Data, Element* pLeft = nullptr, Element* pRight = nullptr);
 		~Element()
 		{
 			
@@ -29,7 +24,7 @@ protected:
 
 		}
 		friend class Tree;
-		template<typename A> friend class UniqueTree;
+		template<typename T> friend class UniqueTree;
 	} *Root;
 public:
 	Element* getRoot()
@@ -43,9 +38,9 @@ public:
 #endif // DEBUG
 
 	}
-	Tree(const std::initializer_list<A>& arr) :Tree()
+	Tree(const std::initializer_list<T>& arr) :Tree()
 	{
-		for (A i : arr) insert(i, Root);
+		for (T i : arr) insert(i, Root);
 #ifdef DEBUG
 		std::cout << "IniConstructor:\t" << this << std::endl;
 #endif // DEBUG
@@ -64,19 +59,19 @@ public:
 		Clear(Root);
 		Root = nullptr;
 	}
-	void insert(A Data)
+	void insert(T Data)
 	{
 		return insert(Data, Root);
 	}
-	A minValue() const
+	T minValue() const
 	{
 		return minValue(Root);
 	}
-	A maxValue() const
+	T maxValue() const
 	{
 		return maxValue(Root);
 	}
-	A sum()
+	T sum()
 	{
 		return sum(Root);
 	}
@@ -88,15 +83,15 @@ public:
 	{
 		return depth(Root);
 	}
-	void to_array(A*& arr, int& count)
+	void to_array(T*& arr, int& count)
 	{
 		return to_array(arr, count, Root);
 	}
-	void erase(A Data)
+	void erase(T Data)
 	{
 		erase(Data, Root);
 	}
-	void erase_one_element(A Data)
+	void erase_one_element(T Data)
 	{
 		return erase_one_element(Data, Root);
 	}
@@ -154,7 +149,7 @@ private:
 		Clear(Root->pRight);
 		delete Root;
 	}
-	void insert(A Data, Element* Root)
+	void insert(T Data, Element* Root)
 	{
 		if (this->Root == nullptr)this->Root = new Element(Data);
 		if (!Root)return;
@@ -169,17 +164,17 @@ private:
 			else insert(Data, Root->pRight);
 		}
 	}
-	A minValue(Element* Root) const
+	T minValue(Element* Root) const
 	{
 		if (this->Root == nullptr)return 0;
 		return Root->pLeft == nullptr ? Root->Data : minValue(Root->pLeft);
 	}
-	A maxValue(Element* Root) const
+	T maxValue(Element* Root) const
 	{
 		if (this->Root == nullptr)return 0;
 		return Root->pRight == nullptr ? Root->Data : maxValue(Root->pRight);
 	}
-	A sum(Element* Root)
+	T sum(Element* Root)
 	{
 		return Root == nullptr? 0 : Root->Data + (!Root->pLeft? 0 : sum(Root->pLeft)) + (!Root->pRight ? 0 : sum(Root->pRight));
 	}
@@ -199,7 +194,7 @@ private:
 		return l_depth > R_depth ? l_depth : R_depth;
 			
 	}
-	void to_array(A*& arr, int& count, Element* Root)
+	void to_array(T*& arr, int& count, Element* Root)
 	{
 		if (!Root)Root = getRoot();
 		if (Root == nullptr)return;
@@ -208,7 +203,7 @@ private:
 		count++;
 		if (Root->pRight) to_array(arr, count, Root->pRight);
 	}
-	void erase(A Data, Element* &Root)
+	void erase(T Data, Element* &Root)
 	{
 		if (Root == nullptr) return;
 		erase(Data, Root->pLeft);
@@ -235,7 +230,7 @@ private:
 			}
 		}
 	}
-	void erase_one_element(A Data, Element*& Root)
+	void erase_one_element(T Data, Element*& Root)
 	{
 		if (Root == nullptr) return;
 		if (Data == Root->Data)
@@ -366,16 +361,23 @@ private:
 
 	}
 
-	template<typename A> friend class UniqueTree;
+	template<typename T> friend class UniqueTree;
 	friend class Element;
-	template<typename A> friend void measure(Tree<A>* tree, A(Tree<A>::* function)());
+	template<typename T> friend void measure(Tree<T>* tree, T(Tree<T>::* function)());
 	
 };
 
-template<typename A> class UniqueTree: public Tree<A>
+template<class T> Tree<T>::Element::Element(T Data, Element* pLeft, Element* pRight)
+{
+#ifdef DEBUG
+	std::cout << "EConstructor:\t" << this << std::endl;
+#endif // DEBUG
+}
+
+template<typename T> class UniqueTree: public Tree<T>
 {
 public:
-	void insert(A Data, Tree<A>::Element* Root)
+	void insert(T Data, Tree<T>::Element* Root)
 	{
 		if (Root == nullptr)Root = new Tree::Element(Data);
 		if (!Root)return;
@@ -390,37 +392,43 @@ public:
 			else insert(Data, Root->pRight);
 		}
 	};
-	void insert(A Data)
+	void insert(T Data)
 	{
-		return insert(Data, Tree<A>::Root);
+		return insert(Data, Tree<T>::Root);
 	}
 
 };
+template<typename T>void measure(const char* message, const Tree<T>* tree, T(Tree<T>::* member_function)()const);
+template<typename T> void measure(const char* message, Tree<T>* tree, T(Tree<T>::* function)());
+template<typename T, class B>void measure(const char* message, const Tree<T>* tree, B(Tree<T>::* member_function)()const);
+template<class T, class B> void measure(const char* message, Tree<T>* tree, B(Tree<T>::* function)());
+template<typename T>void filling(Tree<T>* tree, int n);
+void filling(Tree<double>* tree, int n);
 
-template<typename A>void measure(const char* message, const Tree<A> *tree, A(Tree<A>::*member_function)()const) //code with OA
+template<typename T>void measure(const char* message, const Tree<T> *tree, T(Tree<T>::*member_function)()const) //code with OA
 {
 	clock_t start = clock();
-	A result = (tree->*member_function)();
+	T result = (tree->*member_function)();
 	clock_t end = clock();
 	std::cout << message << result << " выполнено за " << double(end - start) / CLOCKS_PER_SEC << " секунд.\n";
 }
 
-template<typename A> void measure(const char* message, Tree<A> *tree, A (Tree<A>::*function)())
+template<typename T> void measure(const char* message, Tree<T> *tree, T (Tree<T>::*function)())
 {
 	clock_t start = clock();
-	A result =(tree->*function)();
+	T result =(tree->*function)();
 	clock_t end = clock();
 	std::cout << message << result << ", вычеслено за " << double(end - start) / CLOCKS_PER_SEC << " секунд\n";
 }
 
-template<typename A, class B>void measure(const char* message, const Tree<A>* tree, B(Tree<A>::* member_function)()const) //code with OA
+template<typename T, class B>void measure(const char* message, const Tree<T>* tree, B(Tree<T>::* member_function)()const) //code with OA
 {
 	clock_t start = clock();
 	B result = (tree->*member_function)();
 	clock_t end = clock();
 	std::cout << message << result << " выполнено за " << double(end - start) / CLOCKS_PER_SEC << " секунд.\n";
 }
-template<class A, class B> void measure(const char* message, Tree<A>* tree, B (Tree<A>::* function)())
+template<class T, class B> void measure(const char* message, Tree<T>* tree, B (Tree<T>::* function)())
 {
 	clock_t start = clock();
 	B result = (tree->*function)();
@@ -428,7 +436,7 @@ template<class A, class B> void measure(const char* message, Tree<A>* tree, B (T
 	std::cout << message << result << ", вычеслено за " << double(end - start) / CLOCKS_PER_SEC << " секунд\n";
 }
 
-void filling(Tree<int> *tree, int n)
+template<typename T>void filling(Tree<T>* tree, int n)
 {
 	for (int i = 0; i < n; i++) tree->insert(rand() % 100);
 }
