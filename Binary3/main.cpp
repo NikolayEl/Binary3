@@ -496,8 +496,8 @@ void main()
 
 #ifdef BALANCE_CHEK
 	setlocale(LC_ALL, "");
-	//Tree tree2 = { 3, 5, 8, 13, 21, 34, 55, 89 };
-	Tree tree2 = { 89, 55, 34, 21, 13, 8, 5, 3 };
+	Tree tree2 = { 3, 5, 8, 13, 21, 34, 55, 89 };
+	//Tree tree2 = { 89, 55, 34, 21, 13, 8, 5, 3 };
 	tree2.tree_print();
 	tree2.balance_my();
 	system("PAUSE");
