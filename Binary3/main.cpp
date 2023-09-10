@@ -343,10 +343,10 @@ private:
 	}
 	void depth_print(Element* Root, int depth, int width)const
 	{
-		//adjusted_depth - заданная глубина
 		if (!Root)
 		{
-			if(depth == 0)std::cout.width(width * 2);
+			if (depth == 1) std::cout.width(width * 4);
+			if (depth == 0)	std::cout.width(width * 2);
 			std::cout << "";
 			return;
 		}
@@ -496,12 +496,13 @@ void main()
 
 #ifdef BALANCE_CHEK
 	setlocale(LC_ALL, "");
-	Tree tree2 = { 3, 5, 8, 13, 21, 34, 55, 89 };
+	//Tree tree2 = { 3, 5, 8, 13, 21, 34, 55, 89 };
 	//Tree tree2 = { 89, 55, 34, 21, 13, 8, 5, 3 };
+	Tree tree2 = { 50, 25, 75, 16, 32, 64, 90, 28, 29, 92, 95 };
 	tree2.tree_print();
-	tree2.balance_my();
 	system("PAUSE");
 	system("cls");
+	tree2.balance_my();
 	tree2.tree_print();
 #endif // BALANCE_CHEK
 
