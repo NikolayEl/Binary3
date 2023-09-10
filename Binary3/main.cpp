@@ -376,25 +376,25 @@ private:
 
 template<typename T> class UniqueTree: public Tree<T>
 {
-	void insert(T Data, Element* Root)
+	void insert(T Data, Tree<T>::Element* Root)
 	{
-		if (this->Root == nullptr)this->Root = new Element(Data);
+		if (Root == nullptr)Root = new Tree::Element(Data);
 		if (!Root)return;
 		if (Data < Root->Data)
 		{
-			if (Root->pLeft == nullptr)Root->pLeft = new Element(Data);
+			if (Root->pLeft == nullptr)Root->pLeft = new Tree::Element(Data);
 			else insert(Data, Root->pLeft);
 		}
 		else if (Data > Root->Data)
 		{
-			if (Root->pRight == nullptr)Root->pRight = new Element(Data);
+			if (Root->pRight == nullptr)Root->pRight = new Tree::Element(Data);
 			else insert(Data, Root->pRight);
 		}
-	}
+	};
 public:
 	void insert(T Data)
 	{
-		return(Data, Root);
+		return(Data, Tree<T>::Root);
 	}
 
 };
@@ -490,13 +490,13 @@ void main()
 
 #ifdef BALANCE_CHEK
 	setlocale(LC_ALL, "");
-	//Tree tree2 = { 3, 5, 8, 13, 21, 34, 55, 89 };
-	Tree<int> tree2 = { 89, 55, 34, 21, 13, 8, 5, 3 };
-	tree2.tree_print();
+	Tree<int> tree2 = { 3, 5, 8, 13, 21, 34, 55, 89 };
+	//Tree<int> tree2 = { 89, 55, 34, 21, 13, 8, 5, 3 };
+	tree2.tree_print_my();
 	tree2.balance_my();
 	system("PAUSE");
 	system("cls");
-	tree2.tree_print();
+	tree2.tree_print_my();
 #endif // BALANCE_CHEK
 
 }
