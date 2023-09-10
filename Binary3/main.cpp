@@ -265,8 +265,8 @@ private:
 	void balance_my(Element*& Root)
 	{
 		if (Root == nullptr) return;
-		//balance_my(Root->pLeft);
-		//balance_my(Root->pRight);
+		balance_my(Root->pLeft);
+		balance_my(Root->pRight);
 		if (Count(Root) % 2 != 0 ? Count(Root->pLeft) == Count(Root->pRight) : Count(Root->pLeft) == Count(Root->pRight) + 1)
 		{
 			return;
