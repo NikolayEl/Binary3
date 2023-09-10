@@ -317,7 +317,8 @@ template<typename T> void Tree<T>::depth_print(Element* Root, int depth, int wid
 {
 	if (!Root)
 	{
-		if (depth == 0)std::cout.width(width * 2);
+		if (depth == 1) std::cout.width(width * 4);
+		if (depth == 0)	std::cout.width(width * 2);
 		std::cout << "";
 		return;
 	}
