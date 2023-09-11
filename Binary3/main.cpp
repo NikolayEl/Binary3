@@ -487,7 +487,7 @@ void main()
 	std::cout << "Глубина дерева равна: \t" << u_tree.depth() << std::endl;
 #endif // FUNCION_TREE_CHEK
 #ifdef INITIALIZER_CHEK
-	Tree<int> tree2 = { 50, 25, 75, 16, 32, 64, 90, 28, 29};
+	Tree<int> tree2 = { 50, 25, 75, 16, 32, 64, 90, 28, 29, 91, 15, 17};
 	tree2.print();
 	std::cout << std::endl;
 	std::cout << "Глубина дерева: " << tree2.depth() << std::endl;
